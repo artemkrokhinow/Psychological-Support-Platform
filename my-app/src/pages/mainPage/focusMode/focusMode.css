@@ -1,0 +1,236 @@
+:root {
+    --focus-bg: rgba(26, 43, 72, 0.98);
+    --focus-accent: #BCEDF3;
+    --focus-primary: #5C6BC0;
+    --focus-white: #FFFFFF;
+    --focus-text: rgba(255, 255, 255, 0.9);
+}
+
+.dr-focus-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--focus-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    color: var(--focus-white);
+    font-family: 'Inter', sans-serif;
+    animation: dr-focus-fade-in 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden; 
+}
+
+.dr-focus-content-area {
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-y: auto; 
+    padding: 20px 20px 100px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scrollbar-width: none;
+}
+
+.dr-focus-content-area::-webkit-scrollbar {
+    display: none;
+}
+
+.dr-focus-header {
+    padding: 30px 50px;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.dr-focus-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--focus-white);
+    padding: 10px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dr-focus-video-container {
+    width: 100%;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+
+.dr-real-video-player {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+}
+
+.dr-video-overlay-play {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dr-play-huge {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: var(--focus-primary);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    transition: 0.3s;
+}
+
+.dr-focus-main-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 40px 0;
+    text-align: center;
+}
+
+.dr-focus-text-box {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 35px;
+    border-radius: 20px;
+    text-align: left;
+    line-height: 1.8;
+}
+
+.dr-audio-card {
+    background: rgba(255,255,255,0.05);
+    padding: 50px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.dr-focus-visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.dr-focus-bar {
+    width: 6px;
+    height: 20px;
+    background: var(--focus-accent);
+    border-radius: 3px;
+    transition: 0.3s;
+}
+
+.dr-focus-visualizer.active .dr-focus-bar {
+    animation: dr-audio-wave 1s ease-in-out infinite;
+}
+
+.dr-focus-visualizer.active .dr-focus-bar:nth-child(even) { animation-delay: 0.2s; }
+.dr-focus-visualizer.active .dr-focus-bar:nth-child(3n) { animation-delay: 0.4s; }
+
+.dr-play-circle-real {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--focus-white);
+    color: var(--focus-primary);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dr-focus-reader-mode {
+    text-align: left;
+    width: 100%;
+}
+
+.dr-focus-article-body {
+    font-size: 1.3rem;
+    line-height: 1.9;
+    color: var(--focus-text);
+}
+
+.dr-focus-illustration {
+    width: 100%;
+    height: 350px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 24px;
+    margin: 40px 0;
+    padding: 40px;
+}
+
+.dr-focus-finish-btn {
+    margin-top: 60px;
+    background: var(--focus-primary);
+    color: white;
+    border: none;
+    padding: 20px 60px;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dr-focus-feedback-card {
+    margin-top: 50px;
+    background: var(--focus-white);
+    color: #1A2B48;
+    padding: 30px 50px;
+    border-radius: 24px;
+}
+
+.dr-focus-feedback-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.dr-focus-feedback-btn {
+    padding: 12px 30px;
+    border-radius: 20px;
+    border: 1px solid #E9ECEF;
+    background: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dr-focus-sos-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 75px;
+    height: 75px;
+    background: #E53935;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+@keyframes dr-focus-fade-in {
+    from { opacity: 0; transform: scale(1.02); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dr-audio-wave {
+    0%, 100% { height: 15px; }
+    50% { height: 50px; }
+}
