@@ -1,18 +1,44 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+    --dr-bg: #F8F9FA;
+    --dr-surface: #FFFFFF;
+    --dr-primary: #5C6BC0;
+    --dr-primary-hover: #3F51B5;
+    --dr-text-main: #1A2B48;
+    --dr-text-muted: #6C757D;
+    --dr-border: #E9ECEF;
+    --dr-danger: #E53935;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
 body {
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--dr-bg);
+    color: var(--dr-text-main);
+}
+
+.dr-back-btn {
+    background: var(--dr-surface);
+    border: 1px solid var(--dr-border);
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dr-profile-btn {
+    background: var(--dr-primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 40px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.dr-loader {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    font-weight: 700;
+    color: var(--dr-primary);
 }

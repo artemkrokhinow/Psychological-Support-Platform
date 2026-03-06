@@ -41,6 +41,7 @@
 }
 
 .dr-focus-header {
+    width: 100%;
     padding: 30px 50px;
     display: flex;
     justify-content: flex-end;
@@ -55,7 +56,10 @@
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
+    transition: 0.3s;
 }
+
+.dr-focus-close-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
 .dr-focus-video-container {
     width: 100%;
@@ -64,33 +68,14 @@
     overflow: hidden;
     background: #000;
     box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
 }
 
 .dr-real-video-player {
     width: 100%;
-    display: block;
     aspect-ratio: 16/9;
-}
-
-.dr-video-overlay-play {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.dr-play-huge {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: var(--focus-primary);
     border: none;
-    color: white;
-    font-size: 2rem;
-    transition: 0.3s;
+    display: block;
 }
 
 .dr-focus-main-title {
@@ -116,6 +101,7 @@
     width: 100%;
     max-width: 600px;
     text-align: center;
+    margin: 40px 0;
 }
 
 .dr-focus-visualizer {
@@ -124,7 +110,7 @@
     justify-content: center;
     gap: 8px;
     height: 60px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .dr-focus-bar {
@@ -132,7 +118,6 @@
     height: 20px;
     background: var(--focus-accent);
     border-radius: 3px;
-    transition: 0.3s;
 }
 
 .dr-focus-visualizer.active .dr-focus-bar {
@@ -154,24 +139,12 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-.dr-focus-reader-mode {
-    text-align: left;
-    width: 100%;
-}
-
 .dr-focus-article-body {
     font-size: 1.3rem;
     line-height: 1.9;
     color: var(--focus-text);
-}
-
-.dr-focus-illustration {
-    width: 100%;
-    height: 350px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 24px;
-    margin: 40px 0;
-    padding: 40px;
+    text-align: left;
+    white-space: pre-wrap;
 }
 
 .dr-focus-finish-btn {
@@ -184,45 +157,6 @@
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-}
-
-.dr-focus-feedback-card {
-    margin-top: 50px;
-    background: var(--focus-white);
-    color: #1A2B48;
-    padding: 30px 50px;
-    border-radius: 24px;
-}
-
-.dr-focus-feedback-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-    justify-content: center;
-}
-
-.dr-focus-feedback-btn {
-    padding: 12px 30px;
-    border-radius: 20px;
-    border: 1px solid #E9ECEF;
-    background: none;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.dr-focus-sos-btn {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    width: 75px;
-    height: 75px;
-    background: #E53935;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-weight: 900;
-    cursor: pointer;
-    z-index: 2001;
 }
 
 @keyframes dr-focus-fade-in {

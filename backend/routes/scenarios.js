@@ -11,5 +11,14 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+router.post('/', async (req, res) => {
+    try {
+        const newScenario = new Scenario(req.body);
+        const saved = await newScenario.save();
+        res.status(201).json(saved);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
 
 module.exports = router;

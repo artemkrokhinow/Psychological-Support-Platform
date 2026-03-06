@@ -13,39 +13,49 @@ export default function AuthPage() {
         const data = isLogin ? await authAPI.login(formData) : await authAPI.register(formData);
         if (data.token) {
             localStorage.setItem('dr_token', data.token);
-            navigate('/start');
+            navigate('/main');
         } else {
-            alert(data.message || "Помилка");
-        }
-    };
-
-    const handleGuest = async () => {
-        const data = await authAPI.guestLogin(); // Виклик API для гостя
-        if (data.token) {
-            localStorage.setItem('dr_token', data.token);
-            navigate('/start');
+            alert(data.message || "Помилка авторизації");
         }
     };
 
     return (
         <div className="dr-auth-container">
-            <button className="dr-auth-back-btn" onClick={() => navigate('/main')}>← Назад</button>
+            <button className="dr-back-btn" onClick={() => navigate('/main')}>← На головну</button>
             <div className="dr-auth-card">
-                <h1 className="dr-auth-title">{isLogin ? 'Увійти' : 'Реєстрація'}</h1>
+                <h1>{isLogin ? 'Вхід' : 'Реєстрація'}</h1>
                 <form className="dr-auth-form" onSubmit={handleSubmit}>
-                    {!isLogin && <input type="text" placeholder="Ім'я" className="dr-auth-input" onChange={e => setFormData({...formData, username: e.target.value})} />}
-                    <input type="email" placeholder="Email" className="dr-auth-input" onChange={e => setFormData({...formData, email: e.target.value})} />
-                    <input type="password" placeholder="Пароль" className="dr-auth-input" onChange={e => setFormData({...formData, password: e.target.value})} />
-                    <button type="submit" className="dr-auth-submit-btn">{isLogin ? 'Увійти' : 'Почати'}</button>
-                </form>
-                <div className="dr-auth-footer">
-                    <button className="dr-auth-toggle-btn guest" onClick={handleGuest}>Продовжити як гість</button>
-                    <button className="dr-auth-toggle-btn" onClick={() => setIsLogin(!isLogin)}>
-                        {isLogin ? 'Створити акаунт' : 'Вже є акаунт?'}
+                    {!isLogin && (
+                        <input 
+                            type="text" 
+                            placeholder="Ім'я" 
+                            onChange={e => setFormData({...formData, username: e.target.value})} 
+                            required 
+                        />
+                    )}
+                    <input 
+                        type="email" 
+                        placeholder="Email" 
+                        onChange={e => setFormData({...formData, email: e.target.value})} 
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Пароль" 
+                        onChange={e => setFormData({...formData, password: e.target.value})} 
+                        required 
+                    />
+                    <button type="submit" className="dr-auth-submit-btn">
+                        {isLogin ? 'Увійти' : 'Створити акаунт'}
                     </button>
-                </div>
+                </form>
+                <button className="dr-auth-toggle-btn" onClick={() => setIsLogin(!isLogin)}>
+                    {isLogin ? 'Немає акаунту? Реєстрація' : 'Вже є акаунт? Увійти'}
+                </button>
             </div>
-            <button className="dr-sos-fab" onClick={() => navigate('/sos')}><span className="dr-sos-text">SOS</span></button>
+            <button className="dr-sos-fab" onClick={() => navigate('/sos')}>
+                <span className="dr-sos-text">SOS</span>
+            </button>
         </div>
     );
 }

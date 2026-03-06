@@ -1,0 +1,87 @@
+.dr-admin-layout {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dr-admin-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.dr-admin-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.dr-admin-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.dr-admin-form, .dr-nodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.dr-admin-form input, .dr-admin-form textarea, .dr-admin-form select, .dr-admin-input {
+    padding: 12px;
+    border: 1px solid var(--dr-border);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.dr-node-item {
+    border: 1px solid var(--dr-border);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background: #fcfcfc;
+}
+
+.dr-node-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.dr-option-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.dr-option-row input {
+    font-size: 12px;
+    padding: 8px;
+}
+
+.dr-add-small {
+    background: #f0f2f5;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.dr-admin-btn {
+    background: var(--dr-primary);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+}
