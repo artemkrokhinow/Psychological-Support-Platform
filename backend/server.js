@@ -5,7 +5,10 @@ require("dotenv").config();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:3000", "https://your-app.vercel.app"];
+const allowedOrigins = [
+	"http://localhost:3000",
+	"https://shelter-frontend.onrender.com",
+];
 app.use(
 	cors({
 		origin: (origin, callback) => {
