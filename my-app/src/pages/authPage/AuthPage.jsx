@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI } from '../../api/api';
+import {api} from '../../api/api';
 import './authPage.css';
 
 export default function AuthPage() {
@@ -10,7 +10,7 @@ export default function AuthPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = isLogin ? await authAPI.login(formData) : await authAPI.register(formData);
+        const data = isLogin ? await api.login(formData) : await api.register(formData);
         if (data.user) {
             navigate('/main');
         } else {

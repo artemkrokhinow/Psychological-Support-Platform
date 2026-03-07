@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userAPI, authAPI } from '../../api/api';
+import {api} from '../../api/api';
 import './profilePage.css';
 
 export default function ProfilePage() {
@@ -9,7 +9,7 @@ export default function ProfilePage() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        userAPI.getProfile()
+        api.getProfile()
             .then(data => {
                 if(data.message) setError(true);
                 else setUserData(data);
@@ -18,7 +18,7 @@ export default function ProfilePage() {
     }, []);
 
     const handleLogout = () => {
-        authAPI.logout().then(() => {
+        api.logout().then(() => {
             navigate('/main');
         });
     };
