@@ -11,6 +11,9 @@ export default function AdminPage() {
 	const [materials, setMaterials] = useState([]);
 	const [scenarios, setScenarios] = useState([]);
 
+	const [isJsonMode, setIsJsonMode] = useState(false);
+	const [jsonInput, setJsonInput] = useState("");
+
 	const [materialForm, setMaterialForm] = useState({
 		title: "",
 		desc: "",
@@ -69,11 +72,26 @@ export default function AdminPage() {
 			...data,
 		}));
 		setNodes(transformedNodes);
+
+		const jsonString = JSON.stringify(
+			{
+				scenarioId: item.scenarioId,
+				name: item.name,
+				category: item.category || "general",
+				nodes: item.nodes,
+			},
+			null,
+			4,
+		);
+		setJsonInput(jsonString);
+
 		setViewMode("create");
 	};
 
 	const resetForms = () => {
 		setEditId(null);
+		setIsJsonMode(false);
+		setJsonInput("");
 		setMaterialForm({
 			title: "",
 			desc: "",
@@ -112,30 +130,25 @@ export default function AdminPage() {
 	};
 
 	const handleSaveScenario = async () => {
-		if (!scenarioTitle.trim() || !scenarioSlug.trim()) {
-			alert("Введите название и технический ID сценария");
-			return;
-		}
+		let payload;
 
-		let hasEmptyNext = false;
-		nodes.forEach((node) => {
-			if (!node.isFinal) {
-				node.options.forEach((opt) => {
-					if (opt.text.trim() !== "" && !opt.next.trim()) {
-						hasEmptyNext = true;
-					}
-				});
+		if (isJsonMode) {
+			try {
+				payload = JSON.parse(jsonInput);
+				if (!payload.scenarioId || !payload.nodes) {
+					alert("JSON должен содержать scenarioId и nodes");
+					return;
+				}
+			} catch (e) {
+				alert("Некорректный формат JSON");
+				return;
 			}
-		});
+		} else {
+			if (!scenarioTitle.trim() || !scenarioSlug.trim()) {
+				alert("Введите название и технический ID сценария");
+				return;
+			}
 
-		if (hasEmptyNext) {
-			const confirmFinal = window.confirm(
-				"У некоторых ответов не указан следующий блок. Сделать их финальными (завершить сценарий после этого ответа)?",
-			);
-			if (!confirmFinal) return;
-		}
-
-		try {
 			const nodesObject = nodes.reduce((acc, node) => {
 				if (node.id.trim()) {
 					acc[node.id] = {
@@ -154,13 +167,15 @@ export default function AdminPage() {
 				return acc;
 			}, {});
 
-			const payload = {
+			payload = {
 				scenarioId: scenarioSlug,
 				name: scenarioTitle,
 				category: scenarioCategory,
 				nodes: nodesObject,
 			};
+		}
 
+		try {
 			const res = editId
 				? await api.updateScenario(editId, payload)
 				: await api.createScenario(payload);
@@ -170,7 +185,7 @@ export default function AdminPage() {
 				loadData();
 			}
 		} catch (err) {
-			alert("Ошибка сохранения. Возможно, ID блоков не уникальны.");
+			alert("Ошибка сохранения.");
 		}
 	};
 
@@ -212,15 +227,25 @@ export default function AdminPage() {
 			<main className="dr-admin-main">
 				<header className="dr-admin-top-bar">
 					<h1>{activeTab === "content" ? "Библиотека знаний" : "Тренажеры"}</h1>
-					<button
-						className="dr-add-new-btn"
-						onClick={() => {
-							if (viewMode === "list") setViewMode("create");
-							else resetForms();
-						}}
-					>
-						{viewMode === "list" ? "+ Создать" : "Отмена"}
-					</button>
+					<div className="dr-top-actions">
+						{activeTab === "scenarios" && viewMode === "create" && (
+							<button
+								className={`dr-mode-toggle ${isJsonMode ? "active" : ""}`}
+								onClick={() => setIsJsonMode(!isJsonMode)}
+							>
+								{isJsonMode ? "📝 Текстовый Режим" : "📄 JSON Режим"}
+							</button>
+						)}
+						<button
+							className="dr-add-new-btn"
+							onClick={() => {
+								if (viewMode === "list") setViewMode("create");
+								else resetForms();
+							}}
+						>
+							{viewMode === "list" ? "+ Создать" : "Отмена"}
+						</button>
+					</div>
 				</header>
 
 				<div className="dr-admin-container">
@@ -365,6 +390,23 @@ export default function AdminPage() {
 								{editId ? "Обновить" : "Опубликовать"}
 							</button>
 						</form>
+					) : isJsonMode ? (
+						<div className="dr-json-editor">
+							<div className="dr-input-group full">
+								<label>
+									<span>JSON Сценария</span>
+								</label>
+								<textarea
+									className="dr-json-area"
+									placeholder='{ "scenarioId": "id", "name": "Title", "category": "general", "nodes": { ... } }'
+									value={jsonInput}
+									onChange={(e) => setJsonInput(e.target.value)}
+								/>
+							</div>
+							<button className="dr-save-btn" onClick={handleSaveScenario}>
+								{editId ? "Обновить из JSON" : "Сохранить JSON"}
+							</button>
+						</div>
 					) : (
 						<div className="dr-scenario-builder">
 							<div className="dr-scenario-meta">
@@ -445,7 +487,6 @@ export default function AdminPage() {
 												<span>Фраза бота</span>
 											</label>
 											<textarea
-												placeholder="Что скажет бот..."
 												value={node.text}
 												onChange={(e) =>
 													updateNode(nIdx, "text", e.target.value)

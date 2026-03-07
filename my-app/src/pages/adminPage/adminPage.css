@@ -90,6 +90,37 @@
 	color: #1a2b48;
 }
 
+.dr-top-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.dr-mode-toggle {
+	background: #ffffff;
+	border: 2px solid #e2e8f0;
+	padding: 12px 22px;
+	border-radius: 14px;
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: #64748b;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dr-mode-toggle:hover {
+	background: #f8fafc;
+	border-color: #cbd5e1;
+	color: #1a2b48;
+}
+
+.dr-mode-toggle.active {
+	background: #1a2b48;
+	border-color: #1a2b48;
+	color: #ffffff;
+	box-shadow: 0 8px 20px rgba(26, 43, 72, 0.15);
+}
+
 .dr-add-new-btn {
 	background: #5c6bc0;
 	color: white;
@@ -137,7 +168,18 @@
 	box-shadow: 0 10px 20px rgba(92, 107, 192, 0.1) !important;
 }
 
-.dr-type-selector {
+.dr-json-area {
+	font-family: "Fira Code", "Courier New", monospace !important;
+	min-height: 500px !important;
+	background: #1e1e1e !important;
+	color: #9cdcfe !important;
+	line-height: 1.5 !important;
+	white-space: pre !important;
+	padding: 30px !important;
+}
+
+.dr-type-selector,
+.dr-category-grid {
 	display: flex;
 	gap: 10px;
 	background: #f1f5f9;
@@ -145,7 +187,8 @@
 	border-radius: 20px;
 }
 
-.dr-type-btn {
+.dr-type-btn,
+.dr-cat-card {
 	flex: 1;
 	padding: 14px;
 	border: none;
@@ -155,49 +198,14 @@
 	color: #64748b;
 	cursor: pointer;
 	transition: 0.2s;
-}
-
-.dr-type-btn:hover:not(.active) {
-	background: rgba(255, 255, 255, 0.5);
-	color: #1a2b48;
-}
-
-.dr-type-btn.active {
-	background: white;
-	color: #5c6bc0;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.dr-category-grid {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 10px;
-}
-
-.dr-cat-card {
-	padding: 14px;
-	background: #f1f5f9;
-	border: 3px solid transparent;
-	border-radius: 18px;
-	cursor: pointer;
-	font-weight: 800;
-	color: #64748b;
-	transition: all 0.2s ease;
 	text-align: center;
 }
 
-.dr-cat-card:hover:not(.active) {
-	background: #eef2f7;
-	border-color: #e2e8f0;
-	transform: translateY(-2px);
-}
-
+.dr-type-btn.active,
 .dr-cat-card.active {
-	background: #f0f4ff;
-	border-color: #5c6bc0;
+	background: white;
 	color: #5c6bc0;
-	transform: translateY(-2px);
-	box-shadow: 0 5px 15px rgba(92, 107, 192, 0.1);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .dr-input-group label span {
@@ -228,7 +236,6 @@
 
 .dr-list-item:hover {
 	transform: scale(1.01);
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
 	border-color: #e2e8f0;
 }
 
@@ -258,22 +265,11 @@
 	border: none;
 	margin-right: 10px;
 }
-.dr-edit-btn:hover {
-	background: #5c6bc0;
-	color: white;
-	transform: translateY(-2px);
-}
 
 .dr-delete-btn {
 	background: #fff;
 	color: #e53935;
 	border: 3px solid #ffebee;
-}
-.dr-delete-btn:hover {
-	background: #e53935;
-	color: white;
-	border-color: #e53935;
-	transform: translateY(-2px);
 }
 
 .dr-node-card {
@@ -282,7 +278,6 @@
 	padding: 35px;
 	border-radius: 28px;
 	margin-bottom: 30px;
-	transition: 0.3s;
 }
 
 .dr-node-header {
@@ -304,20 +299,11 @@
 	border: 2px solid #c7d2fe;
 }
 
-.dr-id-badge label {
-	font-weight: 900 !important;
-	color: #4338ca;
-	font-size: 0.9rem;
-	margin: 0;
-}
-
 .dr-id-badge input {
 	background: transparent !important;
 	border: none !important;
 	font-weight: 900 !important;
-	color: #1e1b4b !important;
 	width: 140px !important;
-	box-shadow: none !important;
 	padding: 0 !important;
 }
 
@@ -328,24 +314,12 @@
 	font-weight: 900;
 	color: #1a2b48;
 	cursor: pointer;
-	transition: 0.2s;
 }
 
-.dr-checkbox:hover {
-	color: #5c6bc0;
-}
 .dr-checkbox input {
 	width: 24px;
 	height: 24px;
 	accent-color: #5c6bc0;
-}
-
-.dr-sub-label {
-	display: block;
-	font-weight: 900;
-	color: #5c6bc0;
-	margin: 25px 0 15px;
-	font-size: 0.9rem;
 }
 
 .dr-opt-row {
@@ -364,10 +338,6 @@
 	align-items: center;
 	gap: 10px;
 }
-.dr-link-input span {
-	font-weight: 900;
-	color: #5c6bc0;
-}
 
 .dr-remove-opt {
 	background: none;
@@ -376,11 +346,6 @@
 	font-size: 1.2rem;
 	font-weight: 900;
 	cursor: pointer;
-	transition: 0.2s;
-}
-
-.dr-remove-opt:hover {
-	transform: scale(1.3) rotate(90deg);
 }
 
 .dr-add-opt-btn {
@@ -393,12 +358,6 @@
 	font-weight: 800;
 	cursor: pointer;
 	margin-top: 10px;
-	transition: 0.3s;
-}
-
-.dr-add-opt-btn:hover {
-	background: #e0e8ff;
-	border-color: #5c6bc0;
 }
 
 .dr-add-node-btn {
@@ -410,14 +369,6 @@
 	font-weight: 900;
 	cursor: pointer;
 	flex: 1;
-	transition: 0.3s;
-}
-
-.dr-add-node-btn:hover {
-	background: #059669;
-	color: white;
-	transform: translateY(-3px);
-	box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2);
 }
 
 .dr-save-btn {
@@ -431,13 +382,6 @@
 	font-size: 1.3rem;
 	cursor: pointer;
 	width: 100%;
-	transition: 0.4s;
-}
-
-.dr-save-btn:hover {
-	background: #1a2b48;
-	transform: translateY(-4px);
-	box-shadow: 0 15px 35px rgba(17, 29, 53, 0.3);
 }
 
 .dr-action-bar {
