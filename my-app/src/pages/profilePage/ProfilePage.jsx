@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userAPI } from '../../api/api';
+import { userAPI, authAPI } from '../../api/api';
 import './profilePage.css';
 
 export default function ProfilePage() {
@@ -17,10 +17,17 @@ export default function ProfilePage() {
             .catch(() => setError(true));
     }, []);
 
+    const handleLogout = () => {
+        authAPI.logout().then(() => {
+            navigate('/main');
+        });
+    };
+
     if (error) return (
         <div className="dr-profile-layout">
             <button className="dr-back-btn" onClick={() => navigate('/main')}>← Назад</button>
             <div className="dr-error">Помилка завантаження. Спробуйте ввійти знову.</div>
+            <button onClick={() => navigate('/auth')} className="dr-auth-submit-btn">Увійти</button> {} 
             <button className="dr-sos-fab" onClick={() => navigate('/sos')}><span className="dr-sos-text">SOS</span></button>
         </div>
     );
@@ -43,6 +50,7 @@ export default function ProfilePage() {
                             <h2>{userData.stats?.resilience}%</h2>
                         </div>
                     </div>
+                    <button onClick={handleLogout} className="dr-logout-btn">Вийти</button>
                 </div>
             </main>
             <button className="dr-sos-fab" onClick={() => navigate('/sos')}>

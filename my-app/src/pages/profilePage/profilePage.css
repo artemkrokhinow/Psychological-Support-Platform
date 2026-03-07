@@ -137,3 +137,54 @@
 .dr-back-btn:hover {
     background: #F1F3F5;
 }
+
+.dr-logout-btn {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    padding: 12px;
+    background: #e63946;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dr-logout-btn:hover {
+    background: #d0313d;
+}
+
+.dr-profile-layout .dr-error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+.dr-profile-layout .dr-auth-submit-btn {
+    background: #5C6BC0;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    display: block;
+    margin: 20px auto 0;
+}
+
+.dr-profile-layout .dr-auth-submit-btn:hover {
+    background: #4957a3;
+}
+
+.dr-profile-layout:has(.dr-error) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}

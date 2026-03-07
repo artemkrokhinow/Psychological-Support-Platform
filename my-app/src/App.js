@@ -36,10 +36,8 @@ function App() {
                 <Route path="/auth" element={<AuthPage />} />
                 <Route path="/sos" element={<SosPage />} />
                 <Route path="/chat" element={<TrainerSimulator />} />
-                
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                 <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
-                
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </BrowserRouter>

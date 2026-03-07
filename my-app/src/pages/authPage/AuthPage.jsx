@@ -11,8 +11,7 @@ export default function AuthPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = isLogin ? await authAPI.login(formData) : await authAPI.register(formData);
-        if (data.token) {
-            localStorage.setItem('dr_token', data.token);
+        if (data.user) {
             navigate('/main');
         } else {
             alert(data.message || "Помилка авторизації");
