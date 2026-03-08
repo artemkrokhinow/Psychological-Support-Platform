@@ -88,7 +88,7 @@ export default function MainPage() {
 			<header className="dr-header">
 				<div className="dr-logo" onClick={() => navigate("/start")}>
 					<span className="dr-logo-icon">🛡️</span>
-					<span>Прихисток</span>
+					<span>Броня для розуму</span>
 				</div>
 				<nav className="dr-nav-menu">
 					<button className="dr-nav-item active">Головна</button>
