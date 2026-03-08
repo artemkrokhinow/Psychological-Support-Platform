@@ -333,6 +333,48 @@
 	align-items: center;
 }
 
+/* Оновлена сітка для ваги балів */
+.admin-score-row {
+	grid-template-columns: 1fr 140px 120px 40px !important;
+}
+
+.dr-weight-selector {
+	display: flex;
+	gap: 5px;
+	background: #e2e8f0;
+	padding: 4px;
+	border-radius: 12px;
+}
+
+.dr-weight-selector button {
+	border: none;
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: 8px !important;
+	font-weight: 900 !important;
+	cursor: pointer;
+	transition: 0.2s;
+	background: white !important;
+	color: #64748b !important;
+	padding: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dr-weight-selector button.pos.active {
+	background: #10b981 !important;
+	color: white !important;
+}
+.dr-weight-selector button.neu.active {
+	background: #64748b !important;
+	color: white !important;
+}
+.dr-weight-selector button.neg.active {
+	background: #ef4444 !important;
+	color: white !important;
+}
+
 .dr-link-input {
 	display: flex;
 	align-items: center;

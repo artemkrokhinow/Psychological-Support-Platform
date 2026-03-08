@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const ScenarioSchema = new mongoose.Schema({
+const ScenarioSchema = new Schema({
 	scenarioId: { type: String, required: true, unique: true },
 	name: { type: String, required: true },
 	category: {
@@ -8,7 +8,7 @@ const ScenarioSchema = new mongoose.Schema({
 		enum: ["general", "anxiety", "stress", "apathy"],
 		default: "general",
 	},
-	nodes: { type: mongoose.Schema.Types.Mixed, required: true },
+	nodes: { type: Schema.Types.Mixed, required: true },
 });
 
-module.exports = mongoose.model("Scenario", ScenarioSchema);
+export default model("Scenario", ScenarioSchema);

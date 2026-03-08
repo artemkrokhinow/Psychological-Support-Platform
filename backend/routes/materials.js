@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
-const Material = require("../models/Material");
+import { Router } from "express";
+import Material from "../models/Material.js";
+const router = Router();
 
 router.get("/", async (req, res) => {
 	try {
@@ -41,4 +41,4 @@ router.put("/:id", async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

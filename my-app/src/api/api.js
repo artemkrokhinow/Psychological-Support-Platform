@@ -12,7 +12,15 @@ const getHeaders = () => ({
 	"x-auth-token": localStorage.getItem("dr_token"),
 });
 
+const isValidId = (id) => id && id !== "null" && id !== "undefined";
+
 export const api = {
+	loginAsGuest: () =>
+		fetch(`${API_URL}/auth/guest`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+		}).then((res) => res.json()),
+
 	login: (data) =>
 		fetch(`${API_URL}/auth/login`, {
 			method: "POST",
@@ -74,15 +82,35 @@ export const api = {
 	getScenarioById: (id) =>
 		fetch(`${API_URL}/scenarios/${id}`).then((res) => res.json()),
 
-	updateUserProgress: (userId, itemId, type) =>
-		fetch(`${API_URL}/users/update-progress`, {
+	updateUserProgress: (userId, itemId, type) => {
+		if (!isValidId(userId)) return Promise.reject("Invalid ID");
+		return fetch(`${API_URL}/users/update-progress`, {
 			method: "POST",
 			headers: getHeaders(),
 			body: JSON.stringify({ userId, itemId, type }),
-		}).then((res) => res.json()),
+		}).then((res) => res.json());
+	},
 
-	getUserStats: (userId) =>
-		fetch(`${API_URL}/users/${userId}/stats`, {
+	getUserStats: (userId) => {
+		if (!isValidId(userId)) return Promise.reject("Invalid ID");
+		return fetch(`${API_URL}/users/${userId}/stats`, {
 			headers: getHeaders(),
-		}).then((res) => res.json()),
+		}).then((res) => res.json());
+	},
+
+	updateResilience: (userId, amount, type, name) => {
+		if (!isValidId(userId)) return Promise.reject("Invalid ID");
+		return fetch(`${API_URL}/users/update-resilience`, {
+			method: "POST",
+			headers: getHeaders(),
+			body: JSON.stringify({ userId, amount, type, name }),
+		}).then((res) => res.json());
+	},
+
+	getVolumeStats: (userId) => {
+		if (!isValidId(userId)) return Promise.reject("Invalid ID");
+		return fetch(`${API_URL}/users/${userId}/stats-volume`, {
+			headers: getHeaders(),
+		}).then((res) => res.json());
+	},
 };

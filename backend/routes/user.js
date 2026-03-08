@@ -1,49 +1,86 @@
-const express = require('express');
+import express from "express";
+import mongoose from "mongoose";
+import User from "../models/User.js";
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 
-router.post('/register', async (req, res) => {
-    try {
-        const { email, password, username } = req.body;
-        const userExists = await User.findOne({ email });
-        if (userExists) return res.status(400).json({ message: 'Користувач вже існує' });
+router.post("/update-resilience", async (req, res) => {
+	try {
+		const { userId, amount, type, name } = req.body;
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+		if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+			return res.status(400).json({ message: "Invalid ID" });
+		}
 
-        const user = new User({ 
-            email, 
-            password: hashedPassword, 
-            username,
-            stats: { resilience: 50, stabilityDays: 0 },
-            history: [{ date: new Date(), score: 50 }],
-            diagnostic: { answers: [], completedAt: new Date() }
-        });
-        
-        await user.save();
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '7d' });
-        res.json({ token, user: { id: user._id, username: user.username } });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+		const user = await User.findById(userId);
+		if (!user) return res.status(404).json({ message: "User not found" });
+
+		let currentRes = (user.stats.resilience || 50) + amount;
+		if (currentRes > 100) currentRes = 100;
+		if (currentRes < 0) currentRes = 0;
+
+		user.stats.resilience = currentRes;
+		user.history.unshift({
+			activityType: type,
+			activityName: name,
+			change: amount,
+			newScore: currentRes,
+			date: new Date(),
+		});
+
+		await user.save();
+		res.json(user);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
 });
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ message: 'Користувач не знайдений' });
+router.get("/:id/stats-volume", async (req, res) => {
+	try {
+		if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+			return res.status(400).json({ message: "Invalid ID" });
+		}
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: "User not found" });
+		const now = new Date();
+		const getStats = (days) => {
+			const cutoff = new Date();
+			cutoff.setDate(now.getDate() - days);
+			const filtered = (user.history || []).filter(
+				(h) => new Date(h.date) >= cutoff,
+			);
+			const plus = filtered
+				.filter((h) => h.change > 0)
+				.reduce((acc, curr) => acc + curr.change, 0);
+			const minus = filtered
+				.filter((h) => h.change < 0)
+				.reduce((acc, curr) => acc + curr.change, 0);
+			return { plus, minus, total: plus + minus };
+		};
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: 'Невірний пароль' });
-
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '7d' });
-        res.json({ token, user: { id: user._id, username: user.username } });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+		res.json({
+			today: getStats(1),
+			week: getStats(7),
+			allTime: user.stats,
+			history: user.history,
+		});
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
 });
 
-module.exports = router;
+router.get("/:id/stats", async (req, res) => {
+	try {
+		if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+			return res.status(400).json({ message: "Invalid ID" });
+		}
+
+		const user = await User.findById(req.params.id);
+		if (!user) return res.status(404).json({ message: "User not found" });
+		res.json(user.stats);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+export default router;

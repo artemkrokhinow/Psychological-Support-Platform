@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const MaterialSchema = new mongoose.Schema({
+const MaterialSchema = new Schema({
 	title: { type: String, required: true },
 	desc: { type: String, required: true },
 	category: {
@@ -13,4 +13,4 @@ const MaterialSchema = new mongoose.Schema({
 	content: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Material", MaterialSchema);
+export default model("Material", MaterialSchema);

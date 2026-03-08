@@ -31,7 +31,7 @@ export default function AdminPage() {
 			id: "start",
 			text: "",
 			isFinal: false,
-			options: [{ text: "", next: "" }],
+			options: [{ text: "", next: "", weight: 0 }],
 		},
 	]);
 
@@ -70,21 +70,11 @@ export default function AdminPage() {
 		const transformedNodes = Object.entries(item.nodes).map(([id, data]) => ({
 			id,
 			...data,
+			options:
+				data.options?.map((opt) => ({ ...opt, weight: opt.weight || 0 })) || [],
 		}));
 		setNodes(transformedNodes);
-
-		const jsonString = JSON.stringify(
-			{
-				scenarioId: item.scenarioId,
-				name: item.name,
-				category: item.category || "general",
-				nodes: item.nodes,
-			},
-			null,
-			4,
-		);
-		setJsonInput(jsonString);
-
+		setJsonInput(JSON.stringify(item, null, 4));
 		setViewMode("create");
 	};
 
@@ -108,7 +98,7 @@ export default function AdminPage() {
 				id: "start",
 				text: "",
 				isFinal: false,
-				options: [{ text: "", next: "" }],
+				options: [{ text: "", next: "", weight: 0 }],
 			},
 		]);
 		setViewMode("list");
@@ -131,24 +121,14 @@ export default function AdminPage() {
 
 	const handleSaveScenario = async () => {
 		let payload;
-
 		if (isJsonMode) {
 			try {
 				payload = JSON.parse(jsonInput);
-				if (!payload.scenarioId || !payload.nodes) {
-					alert("JSON должен содержать scenarioId и nodes");
-					return;
-				}
 			} catch (e) {
 				alert("Некорректный формат JSON");
 				return;
 			}
 		} else {
-			if (!scenarioTitle.trim() || !scenarioSlug.trim()) {
-				alert("Введите название и технический ID сценария");
-				return;
-			}
-
 			const nodesObject = nodes.reduce((acc, node) => {
 				if (node.id.trim()) {
 					acc[node.id] = {
@@ -161,6 +141,7 @@ export default function AdminPage() {
 									.map((opt) => ({
 										text: opt.text,
 										next: opt.next.trim() || null,
+										weight: parseInt(opt.weight) || 0,
 									})),
 					};
 				}
@@ -179,7 +160,6 @@ export default function AdminPage() {
 			const res = editId
 				? await api.updateScenario(editId, payload)
 				: await api.createScenario(payload);
-
 			if (res) {
 				resetForms();
 				loadData();
@@ -238,10 +218,9 @@ export default function AdminPage() {
 						)}
 						<button
 							className="dr-add-new-btn"
-							onClick={() => {
-								if (viewMode === "list") setViewMode("create");
-								else resetForms();
-							}}
+							onClick={() =>
+								viewMode === "list" ? setViewMode("create") : resetForms()
+							}
 						>
 							{viewMode === "list" ? "+ Создать" : "Отмена"}
 						</button>
@@ -392,17 +371,11 @@ export default function AdminPage() {
 						</form>
 					) : isJsonMode ? (
 						<div className="dr-json-editor">
-							<div className="dr-input-group full">
-								<label>
-									<span>JSON Сценария</span>
-								</label>
-								<textarea
-									className="dr-json-area"
-									placeholder='{ "scenarioId": "id", "name": "Title", "category": "general", "nodes": { ... } }'
-									value={jsonInput}
-									onChange={(e) => setJsonInput(e.target.value)}
-								/>
-							</div>
+							<textarea
+								className="dr-json-area"
+								value={jsonInput}
+								onChange={(e) => setJsonInput(e.target.value)}
+							/>
 							<button className="dr-save-btn" onClick={handleSaveScenario}>
 								{editId ? "Обновить из JSON" : "Сохранить JSON"}
 							</button>
@@ -499,7 +472,10 @@ export default function AdminPage() {
 													Варианты ответов:
 												</label>
 												{node.options.map((opt, oIdx) => (
-													<div key={oIdx} className="dr-opt-row">
+													<div
+														key={oIdx}
+														className="dr-opt-row admin-score-row"
+													>
 														<input
 															type="text"
 															placeholder="Текст кнопки"
@@ -523,6 +499,47 @@ export default function AdminPage() {
 																}}
 															/>
 														</div>
+														<div className="dr-weight-selector">
+															<button
+																type="button"
+																className={
+																	opt.weight === 1 ? "pos active" : "pos"
+																}
+																onClick={() => {
+																	const n = [...nodes];
+																	n[nIdx].options[oIdx].weight = 1;
+																	setNodes(n);
+																}}
+															>
+																+
+															</button>
+															<button
+																type="button"
+																className={
+																	opt.weight === 0 ? "neu active" : "neu"
+																}
+																onClick={() => {
+																	const n = [...nodes];
+																	n[nIdx].options[oIdx].weight = 0;
+																	setNodes(n);
+																}}
+															>
+																0
+															</button>
+															<button
+																type="button"
+																className={
+																	opt.weight === -1 ? "neg active" : "neg"
+																}
+																onClick={() => {
+																	const n = [...nodes];
+																	n[nIdx].options[oIdx].weight = -1;
+																	setNodes(n);
+																}}
+															>
+																-
+															</button>
+														</div>
 														<button
 															type="button"
 															className="dr-remove-opt"
@@ -541,7 +558,11 @@ export default function AdminPage() {
 													className="dr-add-opt-btn"
 													onClick={() => {
 														const n = [...nodes];
-														n[nIdx].options.push({ text: "", next: "" });
+														n[nIdx].options.push({
+															text: "",
+															next: "",
+															weight: 0,
+														});
 														setNodes(n);
 													}}
 												>
@@ -563,7 +584,7 @@ export default function AdminPage() {
 												id: `node_${nodes.length}`,
 												text: "",
 												isFinal: false,
-												options: [{ text: "", next: "" }],
+												options: [{ text: "", next: "", weight: 0 }],
 											},
 										])
 									}

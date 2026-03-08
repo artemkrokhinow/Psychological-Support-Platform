@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import Scenario from "../models/Scenario.js";
+
 const router = express.Router();
-const Scenario = require("../models/Scenario");
 
 router.get("/", async (req, res) => {
 	try {
@@ -52,4 +53,4 @@ router.put("/:id", async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

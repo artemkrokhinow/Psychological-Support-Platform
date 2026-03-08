@@ -1,25 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../api/api";
 
 export default function BlueView({ answers }) {
 	const [step, setStep] = useState(0);
 	const navigate = useNavigate();
 
 	const tasks = [
-		{ text: 'Знайдіть 5 синіх предметів', icon: '🔵' },
-		{ text: 'Знайдіть 4 текстури', icon: '🧱' },
-		{ text: 'Знайдіть 3 джерела звуку', icon: '👂' },
-		{ text: 'Знайдіть 2 запахи', icon: '☕' },
-		{ text: 'Знайдіть 1 річ на смак', icon: '🍕' },
+		{ text: "Знайдіть 5 синіх предметів", icon: "🔵" },
+		{ text: "Знайдіть 4 текстури", icon: "🧱" },
+		{ text: "Знайдіть 3 джерела звуку", icon: "👂" },
+		{ text: "Знайдіть 2 запахи", icon: "☕" },
+		{ text: "Знайдіть 1 річ на смак", icon: "🍕" },
 	];
 
 	const progress = (step / (tasks.length - 1)) * 100;
+
+	const handleFinish = async () => {
+		const userId = localStorage.getItem("userId");
+		if (userId) {
+			await api.updateResilience(
+				userId,
+				20,
+				"sos",
+				"Стабілізація (Заземлення)",
+			);
+		}
+		navigate("/main", { state: { answers } });
+	};
 
 	return (
 		<main className="sos-immersive-layout grounding-mode">
 			<button
 				className="exit-btn"
-				onClick={() => navigate('/main', { state: { answers } })}>
+				onClick={() => navigate("/main", { state: { answers } })}
+			>
 				Вийти
 			</button>
 			<header className="header">
@@ -37,9 +52,7 @@ export default function BlueView({ answers }) {
 							Я знайшов
 						</button>
 					) : (
-						<button
-							className="btn-confirm"
-							onClick={() => navigate('/main', { state: { answers } })}>
+						<button className="btn-confirm" onClick={handleFinish}>
 							Стан стабілізовано
 						</button>
 					)}
